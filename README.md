@@ -10,7 +10,9 @@ First version (Draft Code)
 An automatic trading AI on cryptocurrencies market, including a built-in reinforcement learning trading strategies, exchange api transaction, stop-losing mechanism and emergency alert.
 
 ## Instruction
-execute run.sh under linux
+execute runhabanero.sh under Habanero system ('chmod 744 runhabanero.sh'first)
+If you are not using habanero, install the packages by 'pip install -r requirements.txt'
+
 
 ## Package Dependencies
 * tensorflow>=1.0.0

@@ -1,0 +1,5 @@
+backtest start from 2017-10-05 08:30:00 to 2018-01-01 00:00:00
+        average  max drawdown  negative day  negative periods  negative week  portfolio value  positive periods  postive day  postive week  sharpe ratio
+crp    1.000112      0.503237          2014              1994           2369         1.392126              2183         2163          1808      0.013817
+olmar  0.998868      0.995505          3248              2378           3593         0.004468              1713          929           584     -0.062641
+CNN    1.000365      0.469937          1803              2052           2043         3.309558              2125         2374          2134      0.029003

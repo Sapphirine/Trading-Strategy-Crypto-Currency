@@ -2,9 +2,12 @@
 _E6895 Adv Big Data Analytics Project_  
 First version (Draft Code)
 
-## Group Member: 
+## Group Member
 * Peiqi Jin (pj2324)  
 * Yang Yang (yy2819)  
+
+## Description
+An automatic trading AI on cryptocurrencies market, including a built-in reinforcement learning trading strategies, exchange api transaction, stop-losing mechanism and emergency alert.
 
 ## Instruction
 execute run.sh under linux

@@ -1,0 +1,102 @@
+---
+title: "Big Data"
+author: "YANG YANG yy2819"
+date: "Apr 23, 2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+```{r}
+if(!require('PerformanceAnalytics')){
+  install.packages("PerformanceAnalytics")
+  library(PerformanceAnalytics)
+}
+if(!require('jsonlite')){
+  install.packages("jsonlite")
+  library(jsonlite)
+}
+```
+
+```{r}
+```
+
+```{r,data from testportion}
+summary=read.csv("train_summary.csv",header = T)
+back_history=summary$backtest_test_history
+rm(summary)
+write.table(back_history,"backtesthistory.csv",quote=F,row.names = F,col.names = F)
+back_history=read.csv("backtesthistory.csv",header=F)
+dmatrix=as.matrix(back_history)
+
+
+periods_num=ncol(dmatrix)
+seed_num=nrow(dmatrix)
+dmatrix=cbind(rep(1,seed_num),dmatrix[,-periods_num])
+finalpv=apply(dmatrix, 1, prod)
+pv_history=apply(dmatrix, 1, cumprod)
+logpv_history=log(pv_history,base=10)
+
+par(mar=c(3,3,1.5,0.5))
+par(mgp=c(1.5,0.5,0))
+
+plot(x=1:periods_num,y=logpv_history[,1],type="l",ylim = c(-0.3,5),ylab = "log_10_(NAV)",xlab = "period (30 min for each period)",main = "20 Altcoins Performance (0.25% cost, unit in BTC)")
+if(seed_num>1)
+for(i in 2:seed_num){
+  lines(x=1:periods_num,y=logpv_history[,i],col=i)
+}
+legend("bottomright",legend=1:seed_num,lty=1,col=1:seed_num,cex=0.5)
+finalpv
+maxDrawdown(t(dmatrix-1))
+```
+
+
+```{r}
+USDT_df=read_json("USDT_BTC.json",simplifyVector = T)
+BTC_USDT=USDT_df$close
+n=length(BTC_USDT)
+BTC_USDT=BTC_USDT[(n-periods_num+1):n]
+```
+
+
+```{r,in USD}
+BTC_USDT=rep(BTC_USDT,seed_num)
+BTC_USDT=matrix(BTC_USDT,byrow = F,nrow = periods_num)
+
+pv_history=apply(dmatrix, 1, cumprod)
+pv_history=pv_history*BTC_USDT/BTC_USDT[1]
+logpv_history=log(pv_history,base=10)
+
+par(mar=c(3,3,1.5,0.5))
+par(mgp=c(1.5,0.5,0))
+
+plot(x=1:periods_num,y=logpv_history[,1],type="l",ylim = c(-0.3,5),ylab = "log_10_(NAV)",xlab = "period (30 min for each period)",main = "20 Altcoins Performance (0.25% cost, unit in USDT)")
+if(seed_num>1)
+for(i in 2:seed_num){
+  lines(x=1:periods_num,y=logpv_history[,i],col=i)
+}
+legend("bottomright",legend=1:seed_num,lty=1,col=1:seed_num,cex=0.5)
+finalpv
+```
+
+
+```{r,data from new backtest}
+
+back_history=read.csv("BTCvalue",header=F)
+pv_history=as.matrix(back_history)
+
+pv_history=as.numeric(pv_history)
+periods_num=length(pv_history)
+seed_num=1
+pv_history=c(1,pv_history[-periods_num])
+finalpv=pv_history[periods_num]
+logpv_history=log(pv_history,base=10)
+
+par(mar=c(3,3,1.5,0.5))
+par(mgp=c(1.5,0.5,0))
+
+plot(x=1:periods_num,y=logpv_history,type="l",ylim = c(-0.3,5),ylab = "log_10_(NAV)",xlab = "period (30 min for each period)",main = "seed 15 on New Data (0.25% cost, unit in BTC)")
+finalpv
+dmatrix=pv_history[-1]/pv_history[-periods_num]
+maxDrawdown(dmatrix-1)
+```
+

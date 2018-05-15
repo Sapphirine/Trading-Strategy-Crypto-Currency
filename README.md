@@ -7,7 +7,7 @@ First version (Draft Code)
 * Yang Yang (yy2819)  
 
 ## Description
-An automatic trading AI on cryptocurrencies market, including a built-in reinforcement learning trading strategies, exchange api transaction, stop-losing mechanism and emergency alert.
+An automatic trading AI on cryptocurrencies market, including a built-in reinforcement learning trading strategies, exchange api transaction.
 
 ## BackTest Result
 See _backtest.png_ and _backtesttable.txt_
